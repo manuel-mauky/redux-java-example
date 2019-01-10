@@ -2,6 +2,8 @@ package example;
 
 import eu.lestard.easydi.EasyDI;
 import eu.lestard.redux.Store;
+import eu.lestard.redux.middlewares.ListMiddleware;
+import eu.lestard.redux.middlewares.LoggingMiddleware;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -23,7 +25,10 @@ public class App extends Application {
 		TodoState initialState = new TodoState(Collections.emptyList());
 
 
-		Store<TodoState> store = new Store<>(initialState, new TodoReducer());
+		Store<TodoState> store = new Store<>(initialState, new TodoReducer(),
+			new LoggingMiddleware<>(),
+				new ListMiddleware<>()
+		);
 
 		context.bindInstance(Store.class, store);
 
