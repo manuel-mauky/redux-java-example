@@ -26,7 +26,7 @@ public class App extends Application {
 
 
 		Store<TodoState> store = new Store<>(initialState, new TodoReducer(),
-			new LoggingMiddleware<>(),
+				new LoggingMiddleware<>(),
 				new ListMiddleware<>()
 		);
 

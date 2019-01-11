@@ -1,6 +1,5 @@
 package example;
 
-import eu.lestard.redux.Action;
 import eu.lestard.redux.Store;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
@@ -27,9 +26,7 @@ public class TodoViewController {
 	public void addItem() {
 		final String text = input.getText();
 
-		final Action action = new AddItemAction(text);
-
-		store.dispatch(action);
+		store.dispatch(TodoActionCreators.addItem(text));
 
 		input.setText("");
 	}

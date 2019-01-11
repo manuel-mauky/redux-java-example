@@ -2,6 +2,7 @@ package eu.lestard.redux;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 public class Store<S> {
 
@@ -24,12 +25,16 @@ public class Store<S> {
 
 	private List<Subscriber<S>> subscribers = new ArrayList<>();
 
+	@SafeVarargs
 	public Store(S initialState, Reducer<S> rootReducer, Middleware<S>... middlewares) {
 		this.currentState = initialState;
 		this.reducer = rootReducer;
 
 		for (Middleware<S> middleware : middlewares) {
-			this.dispatch = middleware.apply(dispatch, this::getState);
+			Function<DispatchFunction, DispatchFunction> middlewareFunction = middleware
+					.apply(this::dispatch, this::getState);
+
+			this.dispatch = middlewareFunction.apply(this.dispatch);
 		}
 	}
 

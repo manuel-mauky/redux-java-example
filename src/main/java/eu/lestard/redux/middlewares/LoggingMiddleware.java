@@ -1,5 +1,6 @@
 package eu.lestard.redux.middlewares;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import eu.lestard.redux.DispatchFunction;
@@ -8,12 +9,12 @@ import eu.lestard.redux.Middleware;
 public class LoggingMiddleware<S> implements Middleware<S> {
 
 	@Override
-	public DispatchFunction apply(DispatchFunction dispatch, Supplier<S> getState) {
-		return action -> {
+	public Function<DispatchFunction, DispatchFunction> apply(DispatchFunction dispatch, Supplier<S> getState) {
+		return next -> action -> {
 
 			S stateBefore = getState.get();
 
-			dispatch.accept(action);
+			next.accept(action);
 
 			S stateAfter = getState.get();
 
