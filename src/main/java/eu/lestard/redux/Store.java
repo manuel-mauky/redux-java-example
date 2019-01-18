@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+import javafx.application.Platform;
+
 public class Store<S> {
 
 	private S currentState;
@@ -43,7 +45,11 @@ public class Store<S> {
 	}
 
 	public void dispatch(Object action) {
-		this.dispatch.accept(action);
+		if (Platform.isFxApplicationThread()) {
+			this.dispatch.accept(action);
+		} else {
+			Platform.runLater(() -> this.dispatch.accept(action));
+		}
 	}
 
 	private void notifySubscribers() {
